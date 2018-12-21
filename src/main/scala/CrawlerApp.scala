@@ -16,6 +16,6 @@ object CrawlerApp extends App {
   }.toInt
 
   val pages = Crawler.getPages(url, numEntries)
-  val entries = pages.flatMap(BashOrgParser.parse)
+  val entries = pages.flatMap(BashOrgParser.parse).take(numEntries)
   JsonWriter.save(entries, outputFile)
 }
