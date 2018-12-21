@@ -9,6 +9,7 @@ lazy val crawler = project
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
+      dependencies.typesafeConfig,
       dependencies.scalatest % "test",
       dependencies.scalacheck % "test"
     )
