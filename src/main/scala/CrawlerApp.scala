@@ -9,7 +9,7 @@ object CrawlerApp extends App {
   private val url = config.getString("url")
   private val outputFile = config.getString("outputFile")
 
-  private val numEntries = args.headOption.getOrElse{
+  private val numEntries = args.headOption.getOrElse {
     print("Usage: crawler x\nWhere x is the amount of entries to be fetched\n")
     System.exit(1)
     ""
