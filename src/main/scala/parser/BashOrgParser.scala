@@ -11,8 +11,8 @@ object BashOrgParser {
   private val ID = "a[class=qid click]"
   private val TEXT = "div[class=quote post-content post-body]"
 
-  def parse(page: Document, entries: Int): List[QuoteModel] = {
-    page.body().select(POST).parallelStream().iterator().asScala.take(entries).map { p =>
+  def parse(page: Document): List[QuoteModel] = {
+    page.body().select(POST).parallelStream().iterator().asScala.map { p =>
       val points = Option(p.selectFirst(POINTS).text().toLong).getOrElse(-1L)
       val id =  Option(p.selectFirst(ID).text().tail.toLong).getOrElse(-1L)
       val text = Option(p.selectFirst(TEXT).text()).getOrElse("")

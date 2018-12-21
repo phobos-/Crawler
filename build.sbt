@@ -11,6 +11,7 @@ lazy val crawler = project
     libraryDependencies ++= Seq(
       dependencies.typesafeConfig,
       dependencies.jsoup,
+      dependencies.liftJson,
       dependencies.scalatest % "test",
       dependencies.scalacheck % "test"
     )
@@ -24,11 +25,13 @@ lazy val dependencies =
     val scalacheckV = "1.13.5"
     val typesafeCfgV = "1.3.3"
     val jsoupV = "1.11.3"
+    val liftJsonV = "3.3.0"
 
     val scalatest = "org.scalatest" %% "scalatest" % scalatestV
     val scalacheck = "org.scalacheck" %% "scalacheck" % scalacheckV
     val typesafeConfig = "com.typesafe" % "config" % typesafeCfgV
     val jsoup = "org.jsoup" % "jsoup" % jsoupV
+    val liftJson = "net.liftweb" %% "lift-json" % liftJsonV
   }
 
 lazy val compilerOptions = Seq(

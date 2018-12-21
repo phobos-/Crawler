@@ -30,10 +30,10 @@ class BashOrgParserTest extends FlatSpec with Matchers {
     """.stripMargin
 
   "parser" should "parse example page" in {
-    val entriesToParse = 2
+    val entries = 2
     val page = Jsoup.parse(pageBody)
-    val result = BashOrgParser.parse(page, entriesToParse)
-    result.size should equal(entriesToParse)
+    val result = BashOrgParser.parse(page)
+    result.size should equal(entries)
     result.head.id should equal(id)
     result.head.points should equal(points)
     result.head.content should equal(text)
