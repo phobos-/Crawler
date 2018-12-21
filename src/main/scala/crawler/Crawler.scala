@@ -14,6 +14,6 @@ object Crawler {
 
   def getPages(url: String, entries: Int): Iterable[Document] = {
     val pagesToFetch = Math.ceil(entries / entriesPerPage).toInt
-    (0 to pagesToFetch).map(p => Jsoup.connect(createPageUrl(url, p).toString).get())
+    (0 to pagesToFetch).map(p => Jsoup.connect(createPageUrl(url, p + 1).toString).get())
   }
 }

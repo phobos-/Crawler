@@ -9,10 +9,12 @@ class CrawlerTest extends FlatSpec with Matchers {
     Crawler.createPageUrl("http://something.pl", examplePage).toString should equal(s"http://something.pl/?page=$examplePage")
   }
 
-  it should "fetch proper number of pages from bash.org.pl for x entries given" in {
+  it should "fetch proper number of pages from url for x entries given" in {
     val entries = (4, 21, 55)
-    Crawler.getPages("http://bash.org.pl", entries._1).size should equal(1)
-    Crawler.getPages("http://bash.org.pl", entries._2).size should equal(2)
-    Crawler.getPages("http://bash.org.pl", entries._3).size should equal(3)
+    val url = "http://bash.org.pl"
+    Crawler.getPages(url, entries._1).size should equal(1)
+    Crawler.getPages(url, entries._2).size should equal(2)
+    Crawler.getPages(url, entries._3).size should equal(3)
+    Crawler.getPages(url, entries._1).head.location() should equal(s"$url/?page=1")
   }
 }
