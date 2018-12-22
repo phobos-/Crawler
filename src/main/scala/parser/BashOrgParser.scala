@@ -3,6 +3,7 @@ package parser
 import domain.QuoteModel
 import org.jsoup.nodes.Document
 import scala.collection.JavaConverters._
+import scala.util.Try
 
 object BashOrgParser {
 
@@ -19,9 +20,9 @@ object BashOrgParser {
       .iterator()
       .asScala
       .map { p =>
-        val points = Option(p.selectFirst(POINTS).text().toLong).getOrElse(-1L)
-        val id = Option(p.selectFirst(ID).text().tail.toLong).getOrElse(-1L)
-        val text = Option(p.selectFirst(TEXT).text()).getOrElse("")
+        val points = Try(p.selectFirst(POINTS).text().toLong).getOrElse(-1L)
+        val id = Try(p.selectFirst(ID).text().tail.toLong).getOrElse(-1L)
+        val text = Try(p.selectFirst(TEXT).text()).getOrElse("")
         QuoteModel(id, points, text)
       }
       .toList

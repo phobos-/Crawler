@@ -10,8 +10,11 @@ object Crawler {
   private val entriesPerPage = 20
 
   def createPageUrl(url: String, page: Int): URL =
-    if (url.endsWith("/")) new URL(url + pageUrl.format(page))
-    else new URL(s"$url/${pageUrl.format(page)}")
+    if (url.endsWith("/")) {
+      new URL(url + pageUrl.format(page))
+    } else {
+      new URL(s"$url/${pageUrl.format(page)}")
+    }
 
   def getPages(url: String, entries: Int): Iterable[Document] = {
     val pagesToFetch = Math.ceil(entries / entriesPerPage).toInt

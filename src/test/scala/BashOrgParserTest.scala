@@ -20,11 +20,6 @@ class BashOrgParserTest extends FlatSpec with Matchers {
       |</div>
       |</div>
       |<div id="d$id" class="q post">
-      |<a class="qid click" href="/$id/">#$id</a>
-      |<span class=" points">$points</span>
-      |<div class="quote post-content post-body">
-      |$text
-      |</div>
       |</div>
       |</body>
     """.stripMargin
