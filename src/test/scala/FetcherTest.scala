@@ -17,12 +17,8 @@ class FetcherTest
 
   "fetcher" should "create proper page" in {
     val examplePage = 4
-    Fetcher
-      .createPageUrl("http://something.pl/", examplePage)
-      .toString should equal(s"http://something.pl/?page=$examplePage")
-    Fetcher
-      .createPageUrl("http://something.pl", examplePage)
-      .toString should equal(s"http://something.pl/?page=$examplePage")
+    Fetcher.createPageUrl("http://a.pl/", examplePage) should equal(s"http://a.pl/?page=$examplePage")
+    Fetcher.createPageUrl("http://a.pl", examplePage) should equal(s"http://a.pl/?page=$examplePage")
   }
 
   it should "fetch page from a given url" in {

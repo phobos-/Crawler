@@ -56,19 +56,11 @@ lazy val compilerOptions = Seq(
 
 lazy val notNeededWarts = Seq(
   Wart.Throw,
-  Wart.ImplicitParameter,
-  Wart.ToString,
   Wart.NonUnitStatements,
-  Wart.StringPlusAny,
   Wart.Any,
-  Wart.AsInstanceOf,
-  Wart.Product,
-  Wart.Serializable,
-  Wart.Var,
-  Wart.DefaultArguments,
-  Wart.While,
   Wart.Nothing,
-  Wart.Overloading
+  Wart.DefaultArguments,
+  Wart.Equals
 )
 
 lazy val commonSettings = Seq(

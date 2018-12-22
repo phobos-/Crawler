@@ -22,6 +22,7 @@ object Crawler {
 
   private val entriesPerPage     = 20
   private val pageTimeoutSeconds = 10
+  private val poolSize           = Runtime.getRuntime.availableProcessors
 
   private val config     = ConfigFactory.load("config.conf")
   private val url        = config.getString("url")
@@ -29,21 +30,20 @@ object Crawler {
 
   private lazy val system: ActorSystem = ActorSystem("crawler")
   private lazy val fetcherPool: ActorRef =
-    system.actorOf(Fetcher.props.withRouter(RoundRobinPool(Runtime.getRuntime.availableProcessors)), name = "pool")
+    system.actorOf(Fetcher.props.withRouter(RoundRobinPool(poolSize)), name = "pool")
 
   def crawlBashOrg(numEntries: Int): Unit = {
     val lastPage = Math.ceil(numEntries.toDouble / entriesPerPage).toInt
-    val duration =
-      new FiniteDuration(lastPage * pageTimeoutSeconds, TimeUnit.SECONDS)
-
-    def addToQueue(url: String): Future[TimedResult[Document]] =
-      ask(fetcherPool, url)(new Timeout(duration)).mapTo[TimedResult[Document]]
+    val duration = new FiniteDuration(lastPage * pageTimeoutSeconds, TimeUnit.SECONDS)
+    val timeout  = new Timeout(duration)
 
     val pages = (1 to lastPage).map {
+      // format: off
       case p if p == lastPage && numEntries % entriesPerPage != 0 =>
-        addToQueue(Fetcher.createPageUrl(url, p).toString) -> numEntries % entriesPerPage
+        addToQueue(url, p, timeout) -> numEntries % entriesPerPage
+      // format: on
       case p =>
-        addToQueue(Fetcher.createPageUrl(url, p).toString) -> entriesPerPage
+        addToQueue(url, p, timeout) -> entriesPerPage
     }
 
     val results =
@@ -55,11 +55,17 @@ object Crawler {
     system.terminate
   }
 
+  private def addToQueue(url: String, page: Int, timeout: Timeout): Future[TimedResult[Document]] =
+    ask(fetcherPool, Fetcher.createPageUrl(url, page))(timeout).mapTo[TimedResult[Document]]
+
   private def printStats(entries: Iterable[TimedResult[Entry]], pages: Iterable[TimedResult[Document]]): Unit = {
+    def avgTime(timings: Iterable[Long]): Long = (0L /: timings)(_ + _) / timings.size
+
     val entryTimings = entries.map(_.time)
-    val avgEntryTime = (0L /: entryTimings)(_ + _) / entryTimings.size
+    val avgEntryTime = avgTime(entryTimings)
     val pageTimings  = pages.map(_.time)
-    val avgPageTime  = (0L /: pageTimings)(_ + _) / pageTimings.size
+    val avgPageTime  = avgTime(pageTimings)
+
     print(
       s"Pages fetched: ${pageTimings.size}, average page fetching time: $avgPageTime ns\n" +
       s"Entries fetched: ${entryTimings.size}, average page fetching time: $avgEntryTime ns"

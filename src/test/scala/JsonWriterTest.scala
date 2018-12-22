@@ -13,11 +13,7 @@ class JsonWriterTest extends FlatSpec with Matchers {
 
     val file = new File("./out.txt")
     file.exists() should be(true)
-    Source
-      .fromFile(file)
-      .getLines
-      .mkString
-      .contains("\"content\":\"test\"") should be(true)
+    Source.fromFile(file).getLines.mkString.contains("\"content\":\"test\"") should be(true)
     file.deleteOnExit()
   }
 }

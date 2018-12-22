@@ -1,7 +1,5 @@
 package fetcher
 
-import java.net.URL
-
 import akka.actor.{ Actor, Props }
 import org.jsoup.Jsoup
 import timing.Timer
@@ -15,11 +13,11 @@ class Fetcher extends Actor with Timer {
 object Fetcher {
   private val pageUrl = "?page=%d"
 
-  def createPageUrl(url: String, page: Int): URL =
+  def createPageUrl(url: String, page: Int): String =
     if (url.endsWith("/")) {
-      new URL(url + pageUrl.format(page))
+      url + pageUrl.format(page)
     } else {
-      new URL(s"$url/${pageUrl.format(page)}")
+      s"$url/${pageUrl.format(page)}"
     }
 
   def props: Props = Props[Fetcher]

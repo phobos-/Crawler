@@ -8,12 +8,8 @@ import domain.Entry
 
 object JsonWriter {
   def save(entries: Iterable[Entry], path: String): Unit = {
-    implicit val formats: DefaultFormats.type = DefaultFormats
-    val bw                                    = new BufferedWriter(new FileWriter(new File(path)))
-    bw.write(
-      entries
-        .map(p => render(decompose(p), RenderSettings.pretty))
-        .mkString("\n"))
+    val bw = new BufferedWriter(new FileWriter(new File(path)))
+    bw.write(entries.map(p => render(decompose(p)(DefaultFormats), RenderSettings.pretty)).mkString("\n"))
     bw.close()
   }
 }
