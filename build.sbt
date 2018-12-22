@@ -1,6 +1,6 @@
 name := "crawler"
 
-version := "0.2"
+version := "1.0"
 
 scalaVersion := "2.12.8"
 
@@ -12,6 +12,8 @@ lazy val crawler = project
       dependencies.typesafeConfig,
       dependencies.jsoup,
       dependencies.liftJson,
+      dependencies.akka,
+      dependencies.akkaTest % "test",
       dependencies.scalatest % "test",
       dependencies.scalacheck % "test"
     )
@@ -26,12 +28,15 @@ lazy val dependencies =
     val typesafeCfgV = "1.3.3"
     val jsoupV = "1.11.3"
     val liftJsonV = "3.3.0"
+    val akkaV = "2.5.19"
 
     val scalatest = "org.scalatest" %% "scalatest" % scalatestV
     val scalacheck = "org.scalacheck" %% "scalacheck" % scalacheckV
     val typesafeConfig = "com.typesafe" % "config" % typesafeCfgV
     val jsoup = "org.jsoup" % "jsoup" % jsoupV
     val liftJson = "net.liftweb" %% "lift-json" % liftJsonV
+    val akka = "com.typesafe.akka" %% "akka-actor" % akkaV
+    val akkaTest = "com.typesafe.akka" %% "akka-testkit" % akkaV
   }
 
 lazy val compilerOptions = Seq(
