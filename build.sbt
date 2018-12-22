@@ -13,6 +13,7 @@ lazy val crawler = project
       dependencies.jsoup,
       dependencies.liftJson,
       dependencies.akka,
+      dependencies.logback,
       dependencies.akkaTest % "test",
       dependencies.scalatest % "test",
       dependencies.scalacheck % "test"
@@ -29,6 +30,7 @@ lazy val dependencies =
     val jsoupV = "1.11.3"
     val liftJsonV = "3.3.0"
     val akkaV = "2.5.19"
+    val logbackV = "1.2.3"
 
     val scalatest = "org.scalatest" %% "scalatest" % scalatestV
     val scalacheck = "org.scalacheck" %% "scalacheck" % scalacheckV
@@ -37,6 +39,7 @@ lazy val dependencies =
     val liftJson = "net.liftweb" %% "lift-json" % liftJsonV
     val akka = "com.typesafe.akka" %% "akka-actor" % akkaV
     val akkaTest = "com.typesafe.akka" %% "akka-testkit" % akkaV
+    val logback = "ch.qos.logback" % "logback-classic" % logbackV
   }
 
 lazy val compilerOptions = Seq(

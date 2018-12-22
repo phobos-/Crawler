@@ -1,3 +1,5 @@
+import crawler.Crawler
+
 import scala.util.{Failure, Success, Try}
 
 object CrawlerApp extends App {
@@ -14,4 +16,6 @@ object CrawlerApp extends App {
         "Usage: crawler x\nWhere x is the amount of entries to be fetched\n")
       throw exception
   }
+
+  Crawler.saveQuotes(numEntries)
 }

@@ -2,6 +2,7 @@ package parser
 
 import domain.QuoteModel
 import org.jsoup.nodes.Document
+
 import scala.collection.JavaConverters._
 import scala.util.Try
 
@@ -16,8 +17,6 @@ object BashOrgParser {
     page
       .body()
       .select(POST)
-      .parallelStream()
-      .iterator()
       .asScala
       .map { p =>
         val points = Try(p.selectFirst(POINTS).text().toLong).getOrElse(-1L)
