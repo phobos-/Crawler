@@ -14,8 +14,8 @@ lazy val crawler = project
       dependencies.liftJson,
       dependencies.akka,
       dependencies.logback,
-      dependencies.akkaTest % "test",
-      dependencies.scalatest % "test",
+      dependencies.akkaTest   % "test",
+      dependencies.scalatest  % "test",
       dependencies.scalacheck % "test"
     )
   )
@@ -24,22 +24,22 @@ lazy val dependencies =
   new {
     val scalaFmtV = "1.2.0"
 
-    val scalatestV = "3.0.4"
-    val scalacheckV = "1.13.5"
+    val scalatestV   = "3.0.4"
+    val scalacheckV  = "1.13.5"
     val typesafeCfgV = "1.3.3"
-    val jsoupV = "1.11.3"
-    val liftJsonV = "3.3.0"
-    val akkaV = "2.5.19"
-    val logbackV = "1.2.3"
+    val jsoupV       = "1.11.3"
+    val liftJsonV    = "3.3.0"
+    val akkaV        = "2.5.19"
+    val logbackV     = "1.2.3"
 
-    val scalatest = "org.scalatest" %% "scalatest" % scalatestV
-    val scalacheck = "org.scalacheck" %% "scalacheck" % scalacheckV
-    val typesafeConfig = "com.typesafe" % "config" % typesafeCfgV
-    val jsoup = "org.jsoup" % "jsoup" % jsoupV
-    val liftJson = "net.liftweb" %% "lift-json" % liftJsonV
-    val akka = "com.typesafe.akka" %% "akka-actor" % akkaV
-    val akkaTest = "com.typesafe.akka" %% "akka-testkit" % akkaV
-    val logback = "ch.qos.logback" % "logback-classic" % logbackV
+    val scalatest      = "org.scalatest"     %% "scalatest"      % scalatestV
+    val scalacheck     = "org.scalacheck"    %% "scalacheck"     % scalacheckV
+    val typesafeConfig = "com.typesafe"      % "config"          % typesafeCfgV
+    val jsoup          = "org.jsoup"         % "jsoup"           % jsoupV
+    val liftJson       = "net.liftweb"       %% "lift-json"      % liftJsonV
+    val akka           = "com.typesafe.akka" %% "akka-actor"     % akkaV
+    val akkaTest       = "com.typesafe.akka" %% "akka-testkit"   % akkaV
+    val logback        = "ch.qos.logback"    % "logback-classic" % logbackV
   }
 
 lazy val compilerOptions = Seq(
@@ -73,8 +73,7 @@ lazy val notNeededWarts = Seq(
 
 lazy val commonSettings = Seq(
   scalacOptions ++= compilerOptions,
-  wartremoverWarnings in (Compile, compile) ++= Warts.allBut(
-    notNeededWarts: _*),
+  wartremoverWarnings in (Compile, compile) ++= Warts.allBut(notNeededWarts: _*),
   scalastyleConfig := file("project/scalastyle-config.xml"),
   scalafmtOnCompile := true,
   scalafmtTestOnCompile := true,

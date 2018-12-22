@@ -1,8 +1,9 @@
 import akka.actor.ActorSystem
-import akka.testkit.{ImplicitSender, TestKit}
+import akka.testkit.{ ImplicitSender, TestKit }
 import fetcher.Fetcher
 import org.jsoup.nodes.Document
-import org.scalatest.{BeforeAndAfterAll, FlatSpecLike, Matchers}
+import org.scalatest.{ BeforeAndAfterAll, FlatSpecLike, Matchers }
+import timing.TimedResult
 
 class FetcherTest
     extends TestKit(ActorSystem("MySpec"))
@@ -11,9 +12,8 @@ class FetcherTest
     with Matchers
     with BeforeAndAfterAll {
 
-  override def afterAll: Unit = {
+  override def afterAll: Unit =
     TestKit.shutdownActorSystem(system)
-  }
 
   "fetcher" should "create proper page" in {
     val examplePage = 4
@@ -26,11 +26,11 @@ class FetcherTest
   }
 
   it should "fetch page from a given url" in {
-    val url = "http://bash.org.pl"
+    val url          = "http://bash.org.pl"
     val fetcherActor = system.actorOf(Fetcher.props)
 
     fetcherActor ! url
-    val page = expectMsgType[Document]
+    val page = expectMsgType[TimedResult[Document]].result
     page.location() should equal(url)
   }
 }

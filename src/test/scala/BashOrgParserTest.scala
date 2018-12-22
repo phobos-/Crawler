@@ -1,12 +1,12 @@
 import org.jsoup.Jsoup
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.{ FlatSpec, Matchers }
 import parser.BashOrgParser
 
 class BashOrgParserTest extends FlatSpec with Matchers {
 
-  val id = 123
+  val id     = 123
   val points = 666
-  val text = "test"
+  val text   = "test"
   val pageBody =
     s"""
       |<!doctype html>
@@ -26,12 +26,13 @@ class BashOrgParserTest extends FlatSpec with Matchers {
 
   "parser" should "parse example page" in {
     val entries = 2
-    val page = Jsoup.parse(pageBody)
-    val result = BashOrgParser.parse(page)
+    val page    = Jsoup.parse(pageBody)
+    val result  = BashOrgParser.parse(page, entries)
     result.size should equal(entries)
-    result.head.id should equal(id)
-    result.head.points should equal(points)
-    result.head.content should equal(text)
+    val entry = result.head.result
+    entry.id should equal(id)
+    entry.points should equal(points)
+    entry.content should equal(text)
   }
 
 }

@@ -1,6 +1,6 @@
 import crawler.Crawler
 
-import scala.util.{Failure, Success, Try}
+import scala.util.{ Failure, Success, Try }
 
 object CrawlerApp extends App {
 
@@ -12,10 +12,9 @@ object CrawlerApp extends App {
         throw new IllegalArgumentException("Number of entries must be positive")
       }
     case Failure(exception) =>
-      print(
-        "Usage: crawler x\nWhere x is the amount of entries to be fetched\n")
+      print("Usage: crawler x\nWhere x is the amount of entries to be fetched\n")
       throw exception
   }
 
-  Crawler.saveQuotes(numEntries)
+  Crawler.crawlBashOrg(numEntries)
 }
