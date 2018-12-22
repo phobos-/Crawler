@@ -1,5 +1,7 @@
 package fetcher
 
+import java.net.URL
+
 import akka.actor.{ Actor, Props }
 import org.jsoup.Jsoup
 import timing.Timer
@@ -15,9 +17,9 @@ object Fetcher {
 
   def createPageUrl(url: String, page: Int): String =
     if (url.endsWith("/")) {
-      url + pageUrl.format(page)
+      new URL(url + pageUrl.format(page)).toString
     } else {
-      s"$url/${pageUrl.format(page)}"
+      new URL(s"$url/${pageUrl.format(page)}").toString
     }
 
   def props: Props = Props[Fetcher]

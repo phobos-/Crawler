@@ -1,8 +1,9 @@
 import crawler.Crawler
+import timing.Timer
 
 import scala.util.{ Failure, Success, Try }
 
-object CrawlerApp extends App {
+object CrawlerApp extends App with Timer {
 
   private val numEntries: Int = Try(args.head.toInt) match {
     case Success(x) =>
@@ -16,5 +17,5 @@ object CrawlerApp extends App {
       throw exception
   }
 
-  Crawler.crawlBashOrg(numEntries)
+  print("Total time spent: " + formatTime(profile(Crawler.crawlBashOrg(numEntries)).time))
 }

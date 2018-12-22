@@ -2,7 +2,7 @@ package crawler
 
 import java.util.concurrent.TimeUnit
 
-import akka.actor.{ ActorRef, ActorSystem }
+import akka.actor.ActorSystem
 import akka.pattern.ask
 import akka.routing.RoundRobinPool
 import akka.util.Timeout
@@ -11,14 +11,14 @@ import domain.Entry
 import fetcher.Fetcher
 import org.jsoup.nodes.Document
 import parser.BashOrgParser
-import timing.TimedResult
+import timing.{ TimedResult, Timer }
 import writer.JsonWriter
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.FiniteDuration
 import scala.concurrent.{ Await, Future }
 
-object Crawler {
+object Crawler extends Timer {
 
   private val entriesPerPage     = 20
   private val pageTimeoutSeconds = 10
@@ -28,9 +28,8 @@ object Crawler {
   private val url        = config.getString("url")
   private val outputFile = config.getString("outputFile")
 
-  private lazy val system: ActorSystem = ActorSystem("crawler")
-  private lazy val fetcherPool: ActorRef =
-    system.actorOf(Fetcher.props.withRouter(RoundRobinPool(poolSize)), name = "pool")
+  private lazy val system      = ActorSystem()
+  private lazy val fetcherPool = system.actorOf(Fetcher.props.withRouter(RoundRobinPool(poolSize)))
 
   def crawlBashOrg(numEntries: Int): Unit = {
     val lastPage = Math.ceil(numEntries.toDouble / entriesPerPage).toInt
@@ -67,8 +66,8 @@ object Crawler {
     val avgPageTime  = avgTime(pageTimings)
 
     print(
-      s"Pages fetched: ${pageTimings.size}, average page fetching time: $avgPageTime ns\n" +
-      s"Entries fetched: ${entryTimings.size}, average page fetching time: $avgEntryTime ns"
+      s"Pages fetched: ${pageTimings.size}, average page fetching time: ${formatTime(avgPageTime)}\n" +
+      s"Entries fetched: ${entryTimings.size}, average entry parsing time: ${formatTime(avgEntryTime)}\n"
     )
   }
 }
