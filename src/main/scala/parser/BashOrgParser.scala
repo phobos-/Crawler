@@ -1,11 +1,19 @@
 package parser
 
-import domain.Entry
-import org.jsoup.nodes.Document
-import timing.{ TimedResult, Timer }
+import akka.actor.{Actor, ActorLogging, Props}
+import domain.{Entry, Page}
+import timing.{TimedResult, Timer}
 
 import scala.collection.JavaConverters._
 import scala.util.Try
+
+class BashOrgParser extends Actor with ActorLogging {
+  override def receive: Receive = {
+    case page: Page =>
+      log.debug("received page " + page.element.baseUri())
+      sender() ! BashOrgParser.parse(page)
+  }
+}
 
 object BashOrgParser extends Timer {
 
@@ -14,12 +22,11 @@ object BashOrgParser extends Timer {
   private val ID     = "a[class=qid click]"
   private val TEXT   = "div[class=quote post-content post-body]"
 
-  def parse(page: Document, numEntries: Int): List[TimedResult[Entry]] =
-    page
-      .body()
+  def parse(page: Page): List[TimedResult[Entry]] =
+    page.element
       .select(POST)
       .asScala
-      .take(numEntries)
+      .take(page.numEntries)
       .map { p =>
         profile {
           val points = Try(p.selectFirst(POINTS).text().toLong).getOrElse(-1L)
@@ -29,4 +36,6 @@ object BashOrgParser extends Timer {
         }
       }
       .toList
+
+  def props: Props = Props[BashOrgParser]
 }

@@ -2,13 +2,15 @@ package fetcher
 
 import java.net.URL
 
-import akka.actor.{ Actor, Props }
+import akka.actor.{Actor, ActorLogging, Props}
 import org.jsoup.Jsoup
 import timing.Timer
 
-class Fetcher extends Actor with Timer {
+class Fetcher extends Actor with Timer with ActorLogging {
   override def receive: Receive = {
-    case url: String => sender() ! profile(Jsoup.connect(url).get())
+    case url: String =>
+      log.debug("received url " + url)
+      sender() ! profile(Jsoup.connect(url).get().body())
   }
 }
 

@@ -1,12 +1,12 @@
 import akka.actor.ActorSystem
 import akka.testkit.{ ImplicitSender, TestKit }
 import fetcher.Fetcher
-import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 import org.scalatest.{ BeforeAndAfterAll, FlatSpecLike, Matchers }
 import timing.TimedResult
 
 class FetcherTest
-    extends TestKit(ActorSystem("MySpec"))
+    extends TestKit(ActorSystem())
     with ImplicitSender
     with FlatSpecLike
     with Matchers
@@ -26,7 +26,7 @@ class FetcherTest
     val fetcherActor = system.actorOf(Fetcher.props)
 
     fetcherActor ! url
-    val page = expectMsgType[TimedResult[Document]].result
-    page.location() should equal(url)
+    val page = expectMsgType[TimedResult[Element]].result
+    page.baseUri() should equal(url)
   }
 }
